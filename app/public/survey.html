@@ -159,12 +159,37 @@
         <a href="https://github.com/emmyjarz/friendFinder">GitHub Repo</a>
         <br>
     </div>
+   
     <!-- container -->
+    <!-- modal popup for best friend -->
+    <div class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Best Match</h5>
+
+
+                </div>
+                <div class="modal-body">
+                    <div id="display"></div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
 </html>
-<script>
+<script type="text/javascript">
+//modal not popup when the window load
+    $(document).ready(()=> {
+        $('.modal').modal('hide');
+    });
+
     // var bestFriend;
     $("#submit").on("click", (event) => {
         event.preventDefault();
@@ -209,10 +234,9 @@ function matchFriend(){
         }
          
          var bestFriend = arr.indexOf(Math.min.apply(null, arr));
-            console.log(bestFriend);
-            console.log(data[bestFriend].name);
-            displayBestFriend(data[bestFriend]);
-    
+            $("#display").html(`<h3>${data[bestFriend].name}</h3><img src="${data[bestFriend].photo}">`);
+          $('.modal').modal('show');
+                
 });
 }
     function checkDiffIndex(nextFriend, data) {
@@ -233,11 +257,5 @@ function matchFriend(){
        return arr;
         
     }
-
-    function displayBestFriend(a){
-        
-    }
    
 </script>
-
-<!-- alert Please fill out all fields before submitting! after fill all form then show the match -->
