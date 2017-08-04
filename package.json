@@ -1,0 +1,24 @@
+{
+  "name": "friendfinder",
+  "version": "1.0.0",
+  "description": "Find friend by matching a list of answer from survey.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmyjarz/friendFinder.git"
+  },
+  "author": "Emmy Jarzebinski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emmyjarz/friendFinder/issues"
+  },
+  "homepage": "https://github.com/emmyjarz/friendFinder#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  }
+}
