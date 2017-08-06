@@ -12,13 +12,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+    <style>
+        .custom-select {
+            padding: 0.5em;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <h2>Survey Questions</h2>
         <hr>
-        <form>
+        <form id="submitForm">
             <h3><strong>About You</strong></h3>
             <div class="form-group">
                 <label for="name">Name (Required)</label>
@@ -152,14 +157,15 @@
             <br>
             <br>
 
-            <button type="submit" id="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-check-circle" aria-hidden="true"></i> Submit</button>
+            <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-check-circle" aria-hidden="true"></i> Submit</button>
         </form>
         <hr>
         <a href="/api/friendsList">API Friends List | </a>
-        <a href="https://github.com/emmyjarz/friendFinder">GitHub Repo</a>
+        <a href="https://github.com/emmyjarz/friendFinder">GitHub Repo | </a>
+        <a href="/">Home</a>
         <br>
     </div>
-   
+
     <!-- container -->
     <!-- modal popup for best friend -->
     <div class="modal fade">
@@ -167,8 +173,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Best Match</h5>
-
-
                 </div>
                 <div class="modal-body">
                     <div id="display"></div>
@@ -185,13 +189,13 @@
 
 </html>
 <script type="text/javascript">
-//modal not popup when the window load
-    $(document).ready(()=> {
+    //modal not popup when the window load
+    $(document).ready(() => {
         $('.modal').modal('hide');
     });
 
-    // var bestFriend;
-    $("#submit").on("click", (event) => {
+
+    $("#submitForm").on("submit", (event) => {
         event.preventDefault();
         var score = [];
         for (var i = 1; i < 11; i++) {
@@ -201,61 +205,58 @@
             nameInput: $("#nameInput").val().trim(),
             photoInput: $("#photoInput").val().trim(),
             scores: score
-
-
         };
-       $.post("/api/friendsList", self, (data) => {
-            // console.log(data);
-matchFriend();
-        });
+        $.post("/api/friendsList", self).done(data =>{
 
-    //clear input field
-    $("#nameInput").val("");
-    $("#photoInput").val("");
-    $("#q1Input").val("");
-    $("#q2Input").val("");
-    $("#q3Input").val("");
-    $("#q4Input").val("");
-    $("#q5Input").val("");
-    $("#q6Input").val("");
-    $("#q7Input").val("");
-    $("#q8Input").val("");
-    $("#q9Input").val("");
-    $("#q10Input").val("");
+            matchFriend();
+        });
+        // $.post("/api/friendsList", self, (data) => {
+        //     // console.log(data);
+        //     matchFriend();
+        // });
+
+        //clear input field
+        $("#nameInput").val("");
+        $("#photoInput").val("");
+        $("#q1Input").val("");
+        $("#q2Input").val("");
+        $("#q3Input").val("");
+        $("#q4Input").val("");
+        $("#q5Input").val("");
+        $("#q6Input").val("");
+        $("#q7Input").val("");
+        $("#q8Input").val("");
+        $("#q9Input").val("");
+        $("#q10Input").val("");
 
     });// submiting event
-        var arr =[];
-function matchFriend(){
-    var currentURL = window.location.origin;
-    $.ajax({url: currentURL + "/api/friendsList", method: "GET"}).done(data =>{
-       for (var i = 0; i < data.length - 1; i++) {
-            var nextFriend = data[i].scores;
-            checkDiffIndex(nextFriend, data);
-        }
-         
-         var bestFriend = arr.indexOf(Math.min.apply(null, arr));
+    var arr = [];
+    function matchFriend() {
+        var currentURL = window.location.origin;
+        $.ajax({ url: currentURL + "/api/friendsList", method: "GET" }).done(data => {
+            for (var i = 0; i < data.length - 1; i++) {
+                var nextFriend = data[i].scores;
+                checkDiffIndex(nextFriend, data);
+            }
+
+            var bestFriend = arr.indexOf(Math.min.apply(null, arr));
             $("#display").html(`<h3>${data[bestFriend].name}</h3><img src="${data[bestFriend].photo}">`);
-          $('.modal').modal('show');
-                
-});
-}
+            $('.modal').modal('show');
+        });
+    }
+
     function checkDiffIndex(nextFriend, data) {
         var me = data[data.length - 1].scores;
         var sum = 0;
         var diff = 0;
-        var round = 0;
-        
 
         for (var i = 0; i < data[0].scores.length; i++) {
             diff = (parseInt(me[i]) - parseInt(nextFriend[i]));
             diff = Math.abs(diff);
-
             sum += diff;
-
         }
         arr.push(sum);
-       return arr;
-        
+        return arr;
     }
-   
+
 </script>
