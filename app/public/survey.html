@@ -206,14 +206,9 @@
             photoInput: $("#photoInput").val().trim(),
             scores: score
         };
-        $.post("/api/friendsList", self).done(data =>{
+        $.post("/api/friendsList", self).done(matchFriend());
 
-            matchFriend();
-        });
-        // $.post("/api/friendsList", self, (data) => {
-        //     // console.log(data);
-        //     matchFriend();
-        // });
+
 
         //clear input field
         $("#nameInput").val("");
@@ -229,7 +224,7 @@
         $("#q9Input").val("");
         $("#q10Input").val("");
 
-    });// submiting event
+    });
     var arr = [];
     function matchFriend() {
         var currentURL = window.location.origin;
